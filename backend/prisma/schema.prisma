@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String   @unique
+  password    String
+  profileImage String?
+
+  userListings UserListing[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserListing {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  category    Category @default(Dog)
+  price       Float
+  images      ListingImage[]
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, id])
+}
+
+enum Category {
+  Dog 
+  Cat
+  Bird
+  Fish
+  Reptile
+}
+
+model ListingImage {
+  id            Int        @id @default(autoincrement())
+  order         Int
+  imageUrl      String
+  userListing   UserListing @relation(fields: [userListingId], references: [id])
+  userListingId Int
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@unique([userListingId, order])
+  @@index([userListingId])
+}
+
