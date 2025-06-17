@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
@@ -6,23 +6,38 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
+    const formData = new FormData();
+    formData.append("name", username);
+    formData.append("email", email);
+    formData.append("password", password);
+
+    if (fileInputRef.current?.files?.[0]) {
+      formData.append("profileImage", fileInputRef.current.files[0]);
+    }
+
     try {
       const response = await fetch("http://localhost:5001/api/auth/signup", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: username, // Note: backend expects 'name' not 'username'
-          email,
-          password,
-        }),
+        body: formData,
       });
 
       const data = await response.json();
@@ -32,13 +47,11 @@ const Signup = () => {
         return;
       }
 
-      // Signup successful - redirect to login
       navigate("/login", {
         state: { message: "Account created successfully! Please log in." },
       });
     } catch (err) {
       setError("Something went wrong. Please try again.");
-      console.error("Signup error:", err);
     }
   };
 
@@ -50,8 +63,44 @@ const Signup = () => {
             Create your account
           </h2>
         </div>
+
+        {error && (
+          <div className="text-red-600 text-center text-sm">{error}</div>
+        )}
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="rounded-md shadow-sm space-y-4">
+            {/* Profile Image Upload */}
+            <div className="flex flex-col items-center">
+              <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-100 mb-4">
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Profile preview"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400">
+                    No image
+                  </div>
+                )}
+              </div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+                id="profile-image"
+              />
+              <label
+                htmlFor="profile-image"
+                className="cursor-pointer py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+              >
+                Upload Photo
+              </label>
+            </div>
+
             <div>
               <label htmlFor="username" className="sr-only">
                 Username
@@ -108,10 +157,6 @@ const Signup = () => {
             </button>
           </div>
         </form>
-
-        {error && (
-          <div className="text-red-600 text-center text-sm">{error}</div>
-        )}
 
         <div className="text-sm text-center">
           <Link

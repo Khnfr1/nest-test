@@ -5,7 +5,16 @@ import { authenticateToken } from "../middleware/auth";
 
 const router = express.Router();
 
-export const homepage = async (req: Request, res: Response): Promise<void> => {
+/**
+ * @route GET /
+ * @desc Homepage route that returns user information and listings
+ * @access Private (requires authentication)
+ */
+
+export const homepageUserInfo = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const userId = req.user?.id;
 
@@ -21,24 +30,6 @@ export const homepage = async (req: Request, res: Response): Promise<void> => {
         name: true,
         email: true,
         profileImage: true,
-        userListings: {
-          select: {
-            id: true,
-            title: true,
-            description: true,
-            price: true,
-            category: true,
-            createdAt: true,
-            images: {
-              select: {
-                id: true,
-                order: true,
-                imageUrl: true,
-                createdAt: true,
-              },
-            },
-          },
-        },
       },
     });
 
@@ -59,6 +50,53 @@ export const homepage = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-router.get("/", authenticateToken, homepage);
+export const homepageUserListings = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+
+    const listings = await prisma.userListing.findMany({
+      where: { userId },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        price: true,
+        category: true,
+        createdAt: true,
+        images: {
+          select: {
+            id: true,
+            order: true,
+            imageUrl: true,
+            createdAt: true,
+          },
+        },
+      },
+    });
+
+    res.json({
+      message: "User listings retrieved successfully",
+      listings,
+    });
+    return;
+  } catch (error) {
+    console.error("Homepage error:", error);
+    res.status(500).json({ error: "Internal server error" });
+    return;
+  }
+};
+
+// Define the route for the homepage
+
+router.get("/userinfo", authenticateToken, homepageUserInfo);
+router.get("/userinfo/listings", authenticateToken, homepageUserListings);
 
 export default router;
