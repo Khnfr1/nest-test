@@ -1,14 +1,14 @@
-import { Request, Response } from "express";
+import { Router, Request, Response } from "express";
 import { prisma } from "../config/db";
 import { authenticateToken } from "../middleware/auth";
 import { upload } from "../middleware/multer";
 import { supabase } from "../lib/supabaseClient";
 import express from "express";
 
-const router = express.Router();
+const router = Router();
 
 router.post(
-  "/create-listing",
+  "/submit",
   authenticateToken,
   upload.array("images", 5), // Limit to 5 images
   async (req: Request, res: Response) => {

@@ -35,10 +35,13 @@ const Signup = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5001/api/auth/signup", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "http://localhost:5173/api/v1/signup-button/signup",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
 

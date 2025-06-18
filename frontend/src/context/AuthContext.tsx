@@ -22,9 +22,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Check if user is authenticated on mount
     const checkAuth = async () => {
       try {
-        const response = await fetch("http://localhost:5001/api/auth/check", {
-          credentials: "include",
-        });
+        const response = await fetch(
+          " http://localhost:5173/api/v1/authForFrontend/check",
+          {
+            credentials: "include",
+          }
+        );
         setIsAuthenticated(response.ok);
       } catch {
         setIsAuthenticated(false);

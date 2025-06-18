@@ -14,14 +14,17 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5001/api/auth/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // Important for cookies
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "http://localhost:5173/api/v1/signin-logout/signin",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // Important for cookies
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       if (response.ok) {
         setIsAuthenticated(true);

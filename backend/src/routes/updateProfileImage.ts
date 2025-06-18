@@ -1,11 +1,11 @@
 import express from "express";
-import { Request, Response } from "express";
+import { Router, Request, Response } from "express";
 import { prisma } from "../config/db";
 import { upload } from "../middleware/multer";
 import { supabase } from "../lib/supabaseClient";
 import { authenticateToken } from "../middleware/auth";
 
-const router = express.Router();
+const router = Router();
 
 export const updateProfileImage = async (
   req: Request,
