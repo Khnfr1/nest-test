@@ -15,7 +15,7 @@ const Login = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5173/api/v1/signin-logout/signin",
+        "http://localhost:5001/api/v1/signin-logout/signin",
         {
           method: "POST",
           headers: {
@@ -28,7 +28,7 @@ const Login = () => {
 
       if (response.ok) {
         setIsAuthenticated(true);
-        navigate("/");
+        navigate("/home");
       } else {
         const data = await response.json();
         setError(data.error || "Login failed");

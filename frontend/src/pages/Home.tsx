@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UploadAvatar from "../components/UploadAvatar";
-import CreateListingButton from "../components/CreateListingButton";
+import CreateListingButton from "../components/CreateListingPage";
 
 interface User {
   name: string;
@@ -27,7 +27,7 @@ const Home = () => {
     const fetchUserInfo = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5173/api/v1/homepage/user-info",
+          "http://localhost:5001/api/v1/homepage/user-info",
           {
             credentials: "include",
           }
@@ -43,7 +43,7 @@ const Home = () => {
     const fetchListings = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5173/api/v1/homepage/user-listings",
+          "http://localhost:5001/api/v1/homepage/user-listings",
           { credentials: "include" }
         );
         if (!res.ok) throw new Error("Failed to fetch listings");

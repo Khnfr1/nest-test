@@ -26,17 +26,17 @@ app.use(
 
 // Routes
 app.use("/api/v1/authForFrontend", frontendAuth);
-// http://localhost:5173/api/v1/authForFrontend/check
+// http://localhost:5001/api/v1/authForFrontend/check
 app.use("/api/v1/create-listing", createListingData);
-// http://localhost:5173/api/v1/create-listing/submit
+// http://localhost:5001/api/v1/create-listing/submit
 app.use("/api/v1/homepage", homepageUserInfo);
-// http://localhost:5173/api/v1/homepage/user-info
-// http://localhost:5173/api/v1/homepage/user-listings
+// http://localhost:5001/api/v1/homepage/user-info
+// http://localhost:5001/api/v1/homepage/user-listings
 app.use("/api/v1/signin-logout", signinLogout);
-// http://localhost:5173/api/v1/signin-logout/signin
-// http://localhost:5173/api/v1/signin-logout/logout
+// http://localhost:5001/api/v1/signin-logout/signin
+// http://localhost:5001/api/v1/signin-logout/logout
 app.use("/api/v1/signup-button", signupUser);
-// http://localhost:5173/api/v1/signup-button/signup
+// http://localhost:5001/api/v1/signup-button/signup
 app.use("/api/v1/updateImage", updateProfileImage);
-// http://localhost:5173/api/v1/updateImage/update-profile-image
+// http://localhost:5001/api/v1/updateImage/update-profile-image
 export default app;

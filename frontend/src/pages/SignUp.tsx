@@ -36,7 +36,7 @@ const Signup = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5173/api/v1/signup-button/signup",
+        "http://localhost:5001/api/v1/signup-button/signup",
         {
           method: "POST",
           body: formData,

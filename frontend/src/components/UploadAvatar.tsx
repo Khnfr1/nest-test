@@ -40,7 +40,7 @@ const UploadAvatar: React.FC<{ currentImage?: string }> = ({
 
     try {
       const response = await fetch(
-        "http://localhost:5173/api/v1/updateImage/update-profile-image",
+        "http://localhost:5001/api/v1/updateImage/update-profile-image",
         {
           method: "PUT",
           credentials: "include",

@@ -9,7 +9,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/SignUp";
 import UploadAvatar from "./components/UploadAvatar";
 // import UploadListingImages from "./components/UploadListingImages
-import CreateListingButton from "./components/CreateListingButton";
+import CreateListingButton from "./components/CreateListingPage";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 // import CreateListingButton from "./components/CreateListingButton";
 
@@ -28,7 +28,7 @@ function AppRoutes() {
       />
       <Route
         path="/login"
-        element={isAuthenticated ? <Navigate to="/" /> : <Login />}
+        element={isAuthenticated ? <Navigate to="/home" /> : <Login />}
       />
       <Route
         path="/signup"
